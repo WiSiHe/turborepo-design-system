@@ -2,7 +2,12 @@ export interface CheckboxProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 export const Checkbox = (): CheckboxProps => {
-  return <input type="checkbox" />;
+  return (
+    <div>
+      <label>Checkbox</label>
+      <input type="checkbox" />
+    </div>
+  );
 };
 
 Checkbox.displayName = 'Checkbox';
