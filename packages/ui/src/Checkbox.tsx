@@ -1,4 +1,4 @@
-type CheckboxProps = {
+export type CheckboxProps = {
   label?: string;
   value: string;
 };
