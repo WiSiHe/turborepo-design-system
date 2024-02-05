@@ -1,12 +1,13 @@
 type CheckboxProps = {
   label?: string;
+  value: string;
 };
 
-export const Checkbox = ({ label = '' }): CheckboxProps => {
+export const Checkbox = ({ label = '', value }): CheckboxProps => {
   return (
     <div>
       <label>{label}</label>
-      <input type="checkbox" />
+      <input type="checkbox" value={value} />
     </div>
   );
 };
