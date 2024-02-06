@@ -3,7 +3,12 @@ export interface InputProps {
 }
 
 export const Input = ({ label }: InputProps) => {
-  return <input />;
+  return (
+    <div>
+      <label>{label}</label>
+      <input />
+    </div>
+  );
 };
 
 Input.displayName = 'Input';
