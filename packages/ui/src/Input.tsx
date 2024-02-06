@@ -7,6 +7,7 @@ export const Input = ({ label }: InputProps) => {
     <div>
       <label>{label}</label>
       <input />
+      <p>error:</p>
     </div>
   );
 };
