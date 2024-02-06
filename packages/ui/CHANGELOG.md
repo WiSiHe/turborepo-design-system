@@ -5,6 +5,7 @@
 ### Patch Changes
 
 - 28f8e2a: test
+- added label to input
 - 6ec2668: ew
 
 ## 0.0.3
