@@ -12,6 +12,7 @@ export function Button({
   return (
     <button type={type} {...other}>
       {children}
+      icon
     </button>
   );
 }
