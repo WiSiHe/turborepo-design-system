@@ -1,5 +1,11 @@
 # wisihe-ui
 
+## 0.0.6
+
+### Patch Changes
+
+- 7c0bb22: added errorstate
+
 ## 0.0.5
 
 ### Patch Changes
