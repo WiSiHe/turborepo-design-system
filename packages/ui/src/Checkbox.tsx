@@ -7,6 +7,7 @@ export const Checkbox = ({ label }: CheckboxProps) => {
     <div>
       <label>{label}</label>
       <input type="checkbox" aria-label="checkbox" />
+      <p>test</p>
     </div>
   );
 };
