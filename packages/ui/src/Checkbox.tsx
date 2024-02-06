@@ -1,13 +1,12 @@
-export type CheckboxProps = {
-  label?: string;
-  value: string;
-};
+export interface CheckboxProps {
+  label: string;
+}
 
-export const Checkbox = ({ label = '', value }): CheckboxProps => {
+export const Checkbox = ({ label }: CheckboxProps) => {
   return (
     <div>
       <label>{label}</label>
-      <input type="checkbox" value={value} />
+      <input type="checkbox" aria-label="checkbox" />
     </div>
   );
 };
