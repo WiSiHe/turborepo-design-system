@@ -1,5 +1,5 @@
 ---
-"@wisihe/ui": patch
+'wisihe-ui': patch
 ---
 
 test
