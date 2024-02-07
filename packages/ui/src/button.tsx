@@ -11,8 +11,9 @@ export function Button({
 }: ButtonProps): JSX.Element {
   return (
     <button type={type} {...other}>
+      dwadaw
       {children}
-      dwadwadawdaw
+      dwadwadawd
     </button>
   );
 }
