@@ -51,7 +51,7 @@ jobs:
           version: pnpm ci:version
           commit: 'chore: release package(s)'
           title: 'chore: release package(s)'
-          publish: pnpm ci:publish
+          publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
