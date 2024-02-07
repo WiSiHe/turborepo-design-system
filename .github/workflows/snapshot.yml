@@ -1,0 +1,101 @@
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+    push:
+      branches:
+        - '**'
+        - '!dev'
+        - '!hotfix/*'
+        - '!main'
+
+  jobs:
+    build:
+      timeout-minutes: 10
+      name: Changesets
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+
+        - name: Get branch name
+          id: branch-name
+          uses: tj-actions/branch-names@v6
+
+        - name: Create snapshot tag
+          id: snapshot-tag
+          run: |
+            snapshot_tag=$(echo "${{ steps.branch-name.outputs.current_branch }}" | tr '/' '-')
+            echo "::set-output name=tag::${snapshot_tag}"
+
+        - name: Install Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: 20.11
+
+        - uses: pnpm/action-setup@v2
+          name: Install pnpm
+          id: pnpm-install
+          with:
+            version: 8
+            run_install: false
+
+        - name: Get pnpm store directory
+          id: pnpm-cache
+          shell: bash
+          run: |
+            echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+          env:
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+        - uses: actions/cache@v3
+          name: Setup pnpm cache
+          with:
+            path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+            key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+            restore-keys: |
+              ${{ runner.os }}-pnpm-store-
+
+        - name: Install dependencies
+          shell: bash
+          run: pnpm install
+
+        - name: Turbo Cache
+          id: turbo-cache
+          uses: actions/cache@v3
+          with:
+            path: .turbo
+            key: turbo-cache-${{ github.run_id }}-${{ github.run_attempt }}
+            restore-keys: |
+              turbo-cache-
+
+        - name: Build packages
+          run: pnpm build:packages
+
+        - name: lint
+          run: pnpm lint
+          env:
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+        - name: test
+          run: pnpm test
+          env:
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+            OMNIUM_ENDPOINT_URL: ${{ secrets.OMNIUM_ENDPOINT_URL }}
+            OMNIUM_API_CLIENT_SECRET: ${{ secrets.OMNIUM_API_CLIENT_SECRET }}
+            OMNIUM_API_CLIENT_ID: ${{ secrets.OMNIUM_API_CLIENT_ID }}
+            OMNIUM_MARKET_ID: ${{ secrets.OMNIUM_MARKET_ID }}
+            OMNIUM_DEFAULT_STORE_ID: ${{ secrets.OMNIUM_DEFAULT_STORE_ID }}
+
+        - name: Version snapshot
+          run: |
+            pnpm dlx @changesets/cli version --snapshot ${{ steps.snapshot-tag.outputs.tag }}
+          env:
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: Release snapshot
+          run: |
+            pnpm dlx @changesets/cli publish --tag ${{ steps.snapshot-tag.outputs.tag }} --no-git-tag
+          env:
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
