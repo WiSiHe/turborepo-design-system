@@ -13,7 +13,7 @@ export function Button({
     <button type={type} {...other}>
       dwadaw
       {children}
-      dwadwadawd
+      dwadwadawddwa
     </button>
   );
 }
