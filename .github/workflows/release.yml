@@ -50,9 +50,23 @@ jobs:
         uses: changesets/action@v1
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm release
+          publish: pnpm publish -r
           commit: 'chore: release package(s)'
           title: 'chore: release package(s)'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Comment on PR
+        if: steps.changesets.outputs.releaseType != 'none'
+        uses: xxxxxxxxxxxxxxxxxxxxx@xx
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data } = await github.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              event: 'COMMENT',
+              body: '🚀 A new version of this package has been released. Please review the changes and merge the PR if everything looks good.'
+            })
