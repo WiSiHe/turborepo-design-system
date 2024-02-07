@@ -7,7 +7,7 @@ export const Input = ({ label }: InputProps) => {
     <div>
       <label>{label}</label>
       <input />
-      <p>error:</p>
+      <p>error: test message</p>
     </div>
   );
 };
