@@ -10,7 +10,8 @@
     "version-packages": "changeset version",
     "release": "turbo run build --filter=docs^... && changeset publish",
     "ci:version": "pnpm run version-packages",
-    "ci:publish": "pnpm publish -r --no-git-checks"
+    "ci:publish": "pnpm publish -r --no-git-checks",
+    "ci:publish2": "changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
