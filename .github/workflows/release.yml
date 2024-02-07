@@ -59,7 +59,7 @@ jobs:
             turbo-cache-
 
       - name: Build packages
-        run: pnpm build:packages
+        run: pnpm build
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
